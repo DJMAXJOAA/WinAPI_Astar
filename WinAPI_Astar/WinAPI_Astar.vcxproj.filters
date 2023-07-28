@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Default">
+      <UniqueIdentifier>{09f572bb-d678-413d-8bb0-fd7fd0127564}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{d5d6557f-e227-418a-b17b-e1e66056f54c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Default\리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Engine\1. 헤더파일">
+      <UniqueIdentifier>{c9232539-4100-4a40-a4e0-b312d9ab6cf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\2. 코어">
+      <UniqueIdentifier>{c00d8b9d-e7bb-4383-8206-957981d39527}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3. 매니저">
+      <UniqueIdentifier>{426c06f7-8fef-4398-963c-28cbb20fce98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3. 매니저\3. 씬 매니저">
+      <UniqueIdentifier>{94318b48-d6f4-4d65-beda-ef1d52f22c0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3. 매니저\1. 키 매니저">
+      <UniqueIdentifier>{52ae54fb-6b45-4b9c-a4e1-e0b6eb3e1224}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3. 매니저\2. 타임 매니저">
+      <UniqueIdentifier>{361bd48b-6dfa-4f18-87ee-d8f4b8b5c5d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\4. 오브젝트">
+      <UniqueIdentifier>{98d024f9-beca-4933-8235-1986134db61e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\5. 씬">
+      <UniqueIdentifier>{6e3426db-bc11-4d45-a5ad-0afe34dccbdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\5. 씬\Start">
+      <UniqueIdentifier>{3b2d21e4-1c40-44f4-ae0e-8a720ad5f30d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\4. 오브젝트\노드">
+      <UniqueIdentifier>{16a1950f-f8d9-4eba-90d1-8d455895e426}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\3. 매니저\노드 관리 매니저">
+      <UniqueIdentifier>{358cb8cd-1446-44a2-9c3c-463ac3c95fbb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="WinAPI_Astar.h">
+      <Filter>Default</Filter>
+    </ClInclude>
+    <ClInclude Include="define.h">
+      <Filter>Engine\1. 헤더파일</Filter>
+    </ClInclude>
+    <ClInclude Include="struct.h">
+      <Filter>Engine\1. 헤더파일</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Engine\1. 헤더파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CCore.h">
+      <Filter>Engine\2. 코어</Filter>
+    </ClInclude>
+    <ClInclude Include="CKeyMgr.h">
+      <Filter>Engine\3. 매니저\1. 키 매니저</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneMgr.h">
+      <Filter>Engine\3. 매니저\3. 씬 매니저</Filter>
+    </ClInclude>
+    <ClInclude Include="CTimeMgr.h">
+      <Filter>Engine\3. 매니저\2. 타임 매니저</Filter>
+    </ClInclude>
+    <ClInclude Include="CObject.h">
+      <Filter>Engine\4. 오브젝트</Filter>
+    </ClInclude>
+    <ClInclude Include="CScene.h">
+      <Filter>Engine\5. 씬</Filter>
+    </ClInclude>
+    <ClInclude Include="CScene_Start.h">
+      <Filter>Engine\5. 씬\Start</Filter>
+    </ClInclude>
+    <ClInclude Include="CNode.h">
+      <Filter>Engine\4. 오브젝트\노드</Filter>
+    </ClInclude>
+    <ClInclude Include="CControl.h">
+      <Filter>Engine\3. 매니저\노드 관리 매니저</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="WinAPI_Astar.rc">
+      <Filter>Default\리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>Default\리소스 파일</Filter>
+    </Image>
+    <Image Include="WinAPI_Astar.ico">
+      <Filter>Default\리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="WinAPI_Astar.cpp" />
+    <ClCompile Include="CCore.cpp">
+      <Filter>Engine\2. 코어</Filter>
+    </ClCompile>
+    <ClCompile Include="CKeyMgr.cpp">
+      <Filter>Engine\3. 매니저\1. 키 매니저</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneMgr.cpp">
+      <Filter>Engine\3. 매니저\3. 씬 매니저</Filter>
+    </ClCompile>
+    <ClCompile Include="CTimeMgr.cpp">
+      <Filter>Engine\3. 매니저\2. 타임 매니저</Filter>
+    </ClCompile>
+    <ClCompile Include="CObject.cpp">
+      <Filter>Engine\4. 오브젝트</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene.cpp">
+      <Filter>Engine\5. 씬</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene_Start.cpp">
+      <Filter>Engine\5. 씬\Start</Filter>
+    </ClCompile>
+    <ClCompile Include="CNode.cpp">
+      <Filter>Engine\4. 오브젝트\노드</Filter>
+    </ClCompile>
+    <ClCompile Include="CControl.cpp">
+      <Filter>Engine\3. 매니저\노드 관리 매니저</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
