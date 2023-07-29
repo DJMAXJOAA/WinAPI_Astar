@@ -7,18 +7,17 @@ COLORREF NodeRGB[(int)NODE_STATE::LAST]
 {
 	RGB(255,255,255),//NONE,
 	RGB(0,0,255),//DEPARTURE,
-	RGB(0,0,255),//ARRIVAL,
-	RGB(0,0,0)//BLOCK,
+	RGB(0,255,255),//ARRIVAL,
+	RGB(0,0,0),//BLOCK,
 	RGB(0,255,0),//NO_VISIT,
 	RGB(255,0,0),//VISIT,
 };
 
 CNode::CNode(Vec2 pos, Vec2 scale)
-	: iGValue(1)
-	, iHValue(2)
-	, iState(1)
+	: iGValue(0)
+	, iHValue(1)
+	, iState(0)
 {
-
 	this->SetPos(pos);
 	this->SetScale(scale);
 }
@@ -50,7 +49,7 @@ void CNode::Render(HDC hdc)
 	SelectObject(hdc, oldBrush);
 	DeleteObject(Brush);
 
-	if (!(iState != (int)NODE_STATE::BLOCK || iState != (int)NODE_STATE::DEPARTURE || iState != (int)NODE_STATE::ARRIVAL))
+	if (!(iState == (int)NODE_STATE::BLOCK || iState == (int)NODE_STATE::DEPARTURE || iState == (int)NODE_STATE::ARRIVAL))
 	{
 		temp = std::to_wstring(iGValue);
 		rect = { (int)vPos.x + interval, (int)vPos.y + interval, (int)(vPos.x + vScale.x - interval),(int)vPos.y + interval };

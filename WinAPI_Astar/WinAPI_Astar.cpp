@@ -13,6 +13,8 @@
 #include "WinAPI_Astar.h" // 여기도 이름 수정 해줘야댐
 
 #include "CCore.h"
+#include "CControl.h"
+#include "CNode.h"
 HWND hWnd;
 
 #define MAX_LOADSTRING 100
@@ -78,7 +80,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
         else
         {
-            Sleep(1);
             CCore::GetInstance()->Progress(); // 2. 코어 객체의 실행 부분
         }
     }
@@ -156,8 +157,44 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    static POINT cur_point;
+
     switch (message)
     {
+    case WM_LBUTTONDOWN:
+    {
+        cur_point.x = LOWORD(lParam);
+        cur_point.y = HIWORD(lParam);
+        CControl::GetInstance()->SetNodeActive(cur_point, (int)NODE_STATE::BLOCK);
+    }
+    break;
+    case WM_RBUTTONDOWN:
+    {
+        int iState = CControl::GetInstance()->GetState();
+        cur_point.x = LOWORD(lParam);
+        cur_point.y = HIWORD(lParam);
+
+        switch (iState)
+        {
+        case ARRIVAL:
+        {
+            CControl::GetInstance()->SetNodeActive(cur_point, (int)NODE_STATE::ARRIVAL);
+            CControl::GetInstance()->SetState(DEPARTURE);
+        }
+            break;
+        case DEPARTURE:
+        {
+            CControl::GetInstance()->SetNodeActive(cur_point, (int)NODE_STATE::DEPARTURE);
+            CControl::GetInstance()->SetState(START);
+            CControl::GetInstance()->Init();
+        }
+            break;
+        default:
+            break;
+        }
+        
+    }
+    break;
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);

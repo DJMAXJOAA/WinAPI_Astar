@@ -20,15 +20,11 @@ void CScene_Start::Enter()
 		{
 			Vec2 temp(j * xScale, i * yScale);
 			CNode* add = new CNode(temp, Scale);
+			add->setIndex(j, i);
 			CControl::GetInstance()->AddNodeList(add, i);
 			AddObject(add, GROUP_TYPE::DEFAULT);
 		}
 	}
-	// Player Ãß°¡
-	//CPlayer* pPlayer = new CPlayer;
-	//pPlayer->SetPos(Vec2(40.f, 728.f));
-	//pPlayer->SetScale(Vec2(40.f, 40.f));
-	//AddObject(pPlayer, GROUP_TYPE::PLAYER);
 }
 
 void CScene_Start::Exit()

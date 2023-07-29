@@ -10,6 +10,9 @@
 #define XSIZE 15
 #define YSIZE 10
 
+#define LINE1 10
+#define LINE2 14
+
 enum class GROUP_TYPE
 {
 	DEFAULT,

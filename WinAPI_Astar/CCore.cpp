@@ -40,6 +40,7 @@ void CCore::Progress()
 	CTimeMgr::GetInstance()->Update();
 	CKeyMgr::GetInstance()->Update();
 	CSceneMgr::GetInstance()->Update();
+	CControl::GetInstance()->Update();
 
 	// 화면 클리어
 	Rectangle(memDC, -1, -1, ptResolution.x + 1, ptResolution.y + 1);
