@@ -10,12 +10,13 @@ COLORREF NodeRGB[(int)NODE_STATE::LAST]
 	RGB(0,255,255),//ARRIVAL,
 	RGB(0,0,0),//BLOCK,
 	RGB(0,255,0),//NO_VISIT,
-	RGB(255,0,0),//VISIT,
+	RGB(0,153,0),//VISIT,
+	RGB(255,0,0),//RESULT,
 };
 
 CNode::CNode(Vec2 pos, Vec2 scale)
 	: iGValue(0)
-	, iHValue(1)
+	, iHValue(0)
 	, iState(0)
 {
 	this->SetPos(pos);

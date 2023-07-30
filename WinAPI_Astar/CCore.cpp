@@ -50,7 +50,13 @@ void CCore::Progress()
 
 	// 더블버퍼링(화면 복붙)
 	BitBlt(hdc, 0, 0, ptResolution.x, ptResolution.y, memDC, 0, 0, SRCCOPY);
-	/*TransparentBlt(hdc, 0, 0, ptResolution.x, ptResolution.y, memDC, 0, 0, ptResolution.x, ptResolution.y, RGB(255, 0, 255));*/
+
+	if (CKeyMgr::GetInstance()->GetKeyState(KEY::SPACE) == KEY_STATE::TAP)
+	{
+		printf("초기화\n");
+		CControl::GetInstance()->Reset();
+		CSceneMgr::GetInstance()->Reset();
+	}
 }
 
 CCore::CCore()

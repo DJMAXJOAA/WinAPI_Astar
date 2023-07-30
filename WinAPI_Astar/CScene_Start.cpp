@@ -29,6 +29,7 @@ void CScene_Start::Enter()
 
 void CScene_Start::Exit()
 {
+
 }
 
 CScene_Start::CScene_Start()

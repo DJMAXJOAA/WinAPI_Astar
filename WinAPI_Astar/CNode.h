@@ -9,8 +9,19 @@ enum class NODE_STATE
     BLOCK,
     NO_VISIT,
     VISIT,
+    RESULT,
 
     LAST
+};
+
+struct Node
+{
+    int iFValue; // 밸류값들
+    int iHValue;
+    int iGValue;
+    POINT pIndex; // 벡터 컨테이너 좌표
+
+    Node* prev;
 };
 
 class CNode :
@@ -25,16 +36,12 @@ private:
     int iHValue;
     int iGValue;
 
-private:
-    vector<CNode*> vecNeighbor; // 내가 갈 수 있는 노드들 저장
-
 public:
     void setState(NODE_STATE state) { iState = (int)state; }
     void setGValue(int n) { iGValue = n; }
     void setHValue(int n) { iHValue = n; }
     void setFValue() { iFValue = iGValue + iHValue; }
     void setIndex(int x, int y) { pIndex.x = x; pIndex.y = y; }
-    void AddNeighbor(CNode* node) { vecNeighbor.push_back(node); }
 
 public:
     int getState() { return iState; }
@@ -42,7 +49,6 @@ public:
     int getHValue() { return iHValue; }
     int getFValue() { return iFValue; }
     POINT getIndex() { return pIndex; }
-    vector<CNode*>& getNeighbor() { return vecNeighbor; }
 
 public:
     virtual void Update();

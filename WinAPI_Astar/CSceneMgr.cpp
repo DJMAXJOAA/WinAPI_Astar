@@ -27,6 +27,20 @@ void CSceneMgr::Render(HDC hdc)
 	pCurScene->Render(hdc);
 }
 
+void CSceneMgr::Reset()
+{
+	pCurScene = nullptr;
+	for (int i = 0; i < (UINT)SCENE_TYPE::END; i++)
+	{
+		if (arrScene[i] != nullptr)
+		{
+			delete arrScene[i];
+			arrScene[i] = 0;
+		}
+	}
+	Init();
+}
+
 CSceneMgr::CSceneMgr()
 	: arrScene{}
 	, pCurScene(nullptr)

@@ -2,20 +2,37 @@
 #include "CControl.h"
 #include "CNode.h"
 
-bool cmp::operator() (CNode* a, CNode* b)
+bool cmp::operator() (Node* a, Node* b)
 {
-	if (a->getFValue() == b->getFValue())
+	if (a->iFValue == b->iFValue)
 	{
-		return (a->getHValue() > b->getHValue());
+		return (a->iHValue > b->iHValue);
 	}
 	else
 	{
-		return (a->getFValue() > b->getFValue());
+		return (a->iFValue > b->iFValue);
 	}
 }
 
 void CControl::AStar()
 {
+	ptrCurrent->setState(NODE_STATE::VISIT);
+	if (ptrCurrent == ptrDeparture)
+	{
+		Node* temp = ptrNode;
+		while (temp != nullptr)
+		{
+			vecControlList[temp->pIndex.y][temp->pIndex.x]->setState(NODE_STATE::RESULT);
+			printf("%d\n", temp->iFValue);
+			temp = temp->prev;
+		}
+
+		printf("탐색 완료!\n");
+		iState = END;
+
+		return;
+	}
+
 	POINT ptrIndex = ptrCurrent->getIndex();
 	int minX = ptrIndex.x - 1, maxX = ptrIndex.x + 1;
 	int minY = ptrIndex.y - 1, maxY = ptrIndex.y + 1;
@@ -33,6 +50,7 @@ void CControl::AStar()
 	{
 		for (int y = minY; y <= maxY; y++)
 		{
+			// 지금 탐색하는 본인, 혹은 벽, 혹은 출발점
 			if (ptrIndex.x == x && ptrIndex.y == y
 			 ||	vecControlList[y][x]->getState() == (int)NODE_STATE::BLOCK
 			 || vecControlList[y][x]->getState() == (int)NODE_STATE::ARRIVAL)
@@ -40,92 +58,82 @@ void CControl::AStar()
 				continue;
 			}
 
-			if (vecControlList[y][x]->getState() == (int)NODE_STATE::DEPARTURE)
-			{
-				ptrCurrent = ptrDeparture;
-				printf("도착!\n");
-				return;
-			}
-
-
 			int GValue = CalculateGValue(vecControlList[y][x]);
 			int HValue = CalculateHValue(vecControlList[y][x]);
 			int FValue = GValue + HValue;
-			// 1. 아직 계산 안했으면 바로 등록
-			if (vecControlList[y][x]->getState() == (int)NODE_STATE::NONE)
+
+			// 아직 등록이 안됐거나, F값이 더 낮으면
+			if (vecControlList[y][x]->getState() == (int)NODE_STATE::NONE
+				|| vecControlList[y][x]->getState() == (int)NODE_STATE::DEPARTURE
+				|| FValue < vecControlList[y][x]->getFValue())
 			{
-				vecControlList[y][x]->setState(NODE_STATE::NO_VISIT);
+				if (vecControlList[y][x]->getState() == (int)NODE_STATE::NONE)
+				{
+					vecControlList[y][x]->setState(NODE_STATE::NO_VISIT);
+				}
 				vecControlList[y][x]->setGValue(GValue);
 				vecControlList[y][x]->setHValue(HValue);
 				vecControlList[y][x]->setFValue();
-				ptrCurrent->AddNeighbor(vecControlList[y][x]);
-				queueNode.push(vecControlList[y][x]);
 
-				int n = vecControlList[y][x]->getFValue();
-				printf("%d\n", n);
-			}
+				Node* temp = new Node;
+				temp->iGValue = GValue;
+				temp->iHValue = HValue;
+				temp->iFValue = FValue;
+				temp->pIndex = vecControlList[y][x]->getIndex();
+				temp->prev = ptrNode;
 
-			// 2. 계산 했으면 f값 비교해서 등록
-			else if (FValue < vecControlList[y][x]->getFValue())
-			{
-				vecControlList[y][x]->setGValue(GValue);
-				vecControlList[y][x]->setHValue(HValue);
-				vecControlList[y][x]->setFValue();
-				ptrCurrent->AddNeighbor(vecControlList[y][x]);
-				queueNode.push(vecControlList[y][x]);
-
-				int n = vecControlList[y][x]->getFValue();
-				printf("%d\n", n);
+				queueNode.push(temp);
 			}
 		}
-	}
-
-	CNode* temp = nullptr;
-	int min = 999999;
-	for (int i = 0; i < ptrCurrent->getNeighbor().size(); i++)
-	{
-		if (ptrCurrent->getNeighbor()[i]->getFValue() < min)
-		{
-			min = ptrCurrent->getNeighbor()[i]->getFValue();
-			temp = ptrCurrent->getNeighbor()[i];
-		}
-	}
-	if (temp != nullptr)
-	{
-		ptrCurrent = temp;
-		ptrCurrent->setState(NODE_STATE::VISIT);
-		return;
 	}
 }
 
 void CControl::Update()
 {
-	if (iState < START)
+	static int abcd = 0;
+
+	if (iState != START)
 		return;
+	abcd++;
 
-	while (queueNode.top()->getFValue() > ptrCurrent->getFValue())
+	Sleep(1);
+
+	AStar();
+
+	if (queueNode.empty())
 	{
-		Sleep(1000);
-
-		AStar();
-
-		if (ptrCurrent == ptrDeparture)
-		{
-			iState = ARRIVAL;
-			return;
-		}
+		printf("경로 탐색 실패\n");
+		iState = END;
+		return;
 	}
-
-	ptrCurrent = queueNode.top();
+	ptrNode = queueNode.top();
+	ptrCurrent = vecControlList[ptrNode->pIndex.y][ptrNode->pIndex.x];
+	printf("%d 번째 루프\n", abcd);
+	printf("g값::%d / h값::%d / f값::%d\n", ptrNode->iGValue, ptrNode->iHValue, ptrNode->iFValue);
+	printf("x좌표::%d / y좌표::%d\n\n", ptrNode->pIndex.x, ptrNode->pIndex.y);
 	queueNode.pop();
-	printf("%d\n", ptrCurrent->getFValue());
+}
 
+void CControl::Reset()
+{
+	queueNode = priority_queue<Node*, vector<Node*>, cmp>();
+	ptrArrival = nullptr;
+	ptrDeparture = nullptr;
+	ptrCurrent = nullptr;
+	for (int i = 0; i < YSIZE; i++)
+	{
+		vecControlList[i].clear();
+	}
+	iState = ARRIVAL;
 }
 
 void CControl::SetNodeActive(POINT cur_point, int state)
 {
 	if (iState > DEPARTURE)
+	{
+		printf("입구컷\n");
 		return;
+	}
 
 	for (int x = 0; x < vecControlList[0].size(); x++)
 	{
@@ -145,6 +153,7 @@ void CControl::SetNodeActive(POINT cur_point, int state)
 				{
 					ptrDeparture = vecControlList[y][x];
 				}
+				printf("x::%d, y::%d 등록, 상태값::%d\n", x, y, iState);
 				return;
 			}
 		}
@@ -168,10 +177,10 @@ int CControl::CalculateGValue(CNode* neighbor)
 	POINT currentIndex = ptrCurrent->getIndex();
 	// 대각선
 	if (abs(currentIndex.x - neighborIndex.x) == abs(currentIndex.y - neighborIndex.y))
-		return (ptrCurrent->getGValue() + LINE2);
+		return (ptrNode->iGValue + LINE2);
 	// 직선
 	else
-		return (ptrCurrent->getGValue() + LINE1);
+		return (ptrNode->iGValue + LINE1);
 }
 
 int CControl::CalculateHValue(CNode* neighbor)
@@ -202,8 +211,14 @@ void CControl::Init()
 {
 	ptrCurrent = ptrArrival;
 
-	AStar();
+	Node* temp = new Node;
+	temp->iGValue = 0;
+	temp->iHValue = CalculateHValue(ptrCurrent);
+	temp->iFValue = temp->iHValue;
+	temp->pIndex = ptrCurrent->getIndex();
+	temp->prev = nullptr;
 
-	//ptrCurrent = queueNode.top();
-	//queueNode.pop();
+	ptrNode = temp;
+
+	AStar();
 }

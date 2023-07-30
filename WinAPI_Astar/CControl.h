@@ -1,6 +1,7 @@
 #pragma once
 
 class CNode;
+struct Node;
 
 enum CONTROL_STATE
 {
@@ -9,7 +10,7 @@ enum CONTROL_STATE
 
 struct cmp
 {
-	bool operator() (CNode* a, CNode* b);
+	bool operator() (Node* a, Node* b);
 };
 
 class CControl
@@ -17,10 +18,11 @@ class CControl
 	SINGLE(CControl);
 private:
 	vector<vector<CNode*>> vecControlList;
-	priority_queue<CNode*, vector<CNode*>, cmp> queueNode;
+	priority_queue<Node*, vector<Node*>, cmp> queueNode;
 	CNode* ptrArrival; // 출발
 	CNode* ptrDeparture; // 도착
 	CNode* ptrCurrent; // 현재 가리키는 포인터
+	Node* ptrNode;
 	int iState;		// 현재 상태 
 
 public:
@@ -35,12 +37,12 @@ public:
 public:
 	void SetNodeActive(POINT cur_point, int state);
 	void SetState(int state) { iState = state; }
-	void SetPtrNode(int state);
 
 public:
 	void AddNodeList(CNode* node, int n) { vecControlList[n].push_back(node); }
 	void Init();
 	void Update();
+	void Reset();
 
 public:
 	CControl();

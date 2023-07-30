@@ -13,6 +13,7 @@ public:
 	void Init();
 	void Update();
 	void Render(HDC hdc);
+	void Reset();
 
 private:
 	CSceneMgr();
